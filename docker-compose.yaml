@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  mosquitto:
+     image: eclipse-mosquitto:1.6.9
+     container_name: mosquitto
+     ports:
+       - 1883:1883
+     restart: always
+
+  node-red:
+    image: nodered/node-red:1.2.7
+    environment:
+      - TZ=Europe/Amsterdam
+    depends_on:
+      - influxdb
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./node-red-data:/data
+
+  influxdb:
+    image: influxdb:1.7.10
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    restart: always
+
+  grafana:
+    image: grafana/grafana:6.7.3
+    container_name: grafana
+    depends_on:
+      - influxdb
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+    restart: always
+
+volumes:
+  node-red-data:
+  grafana:
+  influxdb:
