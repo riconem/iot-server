@@ -18,9 +18,12 @@ services:
       - "1880:1880"
     volumes:
       - ./node-red-data:/data
+    restart: always
 
   influxdb:
     image: influxdb:1.7.10
+    environment:
+      - TZ=Europe/Amsterdam
     container_name: influxdb
     ports:
       - 8086:8086
@@ -31,6 +34,8 @@ services:
   grafana:
     image: grafana/grafana:6.7.3
     container_name: grafana
+    environment:
+      - TZ=Europe/Amsterdam
     depends_on:
       - influxdb
     ports:
