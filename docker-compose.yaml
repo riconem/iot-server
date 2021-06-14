@@ -44,6 +44,13 @@ services:
       - ./grafana:/var/lib/grafana
     restart: always
 
+  con-checker:
+    image: con-checker:1.0.0
+    container_name: con-checker
+    depends_on:
+      - mosquitto
+    restart: always
+
 volumes:
   node-red-data:
   grafana:
